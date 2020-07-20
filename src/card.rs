@@ -3,6 +3,8 @@ use regex::Regex;
 /// zettel file.
 use std::path::{Path, PathBuf};
 
+type Tag = String;
+
 pub struct Card {
     /// The zettel on the filesystem.
     // I'm not decided on whether I should immediately read the zettel
@@ -11,7 +13,16 @@ pub struct Card {
     path: PathBuf,
 }
 
-impl Card {}
+impl Card {
+    /// Looks through a card and attempts to extract anything that
+    /// resembles a tag. A tag looks something like this:
+    /// #abc123-def456:ghi-789 (something alphanumeric with dashes
+    /// and/or colons, that starts with a pound)
+    fn extract_tags(&self) -> Vec<Tag> {
+        let re = Regex::new(r"#[[:alnum:]:-]+").unwrap();
+        Vec::<Tag>::new()
+    }
+}
 
 impl std::convert::From<&Path> for Card {
     fn from(path: &Path) -> Self {
