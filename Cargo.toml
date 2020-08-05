@@ -1,5 +1,5 @@
 [package]
-name = "kastenzettel"
+name = "whet" # because whet is synonymous with sharpen
 version = "0.1.0"
 authors = ["Pang Tun Jiang <mail@pangt.dev>"]
 edition = "2018"

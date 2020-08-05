@@ -2,7 +2,7 @@ use std::path::{Path, PathBuf};
 use structopt::StructOpt;
 
 #[derive(Debug, StructOpt)]
-#[structopt(name = "Zettel-rs")]
+#[structopt(name = "whet")]
 struct Args {
     #[structopt(long, short)]
     debug: bool,
