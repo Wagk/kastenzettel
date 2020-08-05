@@ -1,3 +1,4 @@
+use once_cell::sync::Lazy;
 use regex::Regex;
 /// The Card is the main unit of analysis. We use it to represent a
 /// zettel file.
@@ -5,6 +6,7 @@ use std::path::{Path, PathBuf};
 
 type Tag = String;
 
+static TAG_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r"#[[:alnum:]:-]+").unwrap());
 pub struct Card {
     /// The zettel on the filesystem.
     // I'm not decided on whether I should immediately read the zettel
