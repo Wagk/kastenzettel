@@ -1,6 +1,9 @@
 use std::path::{Path, PathBuf};
 use structopt::StructOpt;
 
+mod card;
+use card::Card;
+
 #[derive(Debug, StructOpt)]
 #[structopt(name = "whet")]
 struct Args {
@@ -33,6 +36,19 @@ fn collect_files_nested(paths: &Path) -> Vec<PathBuf> {
 
 fn main() {
     let opt = Args::from_args();
+    let cards = collect_files_nested(&opt.directory)
+        .into_iter()
+        .map(|f| Card::from(f))
+        .collect::<Vec<Card>>();
+
+    let tags = cards
+        .iter()
+        .map(|c| c.extract_tags())
+        .flatten()
+        .collect::<Vec<_>>();
+
+    // DEBUG: Somehow there's some non-UTF-8 stuff in my work zettel
+    dbg!(tags);
 }
 
 #[cfg(test)]

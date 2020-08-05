@@ -7,6 +7,8 @@ use std::path::{Path, PathBuf};
 type Tag = String;
 
 static TAG_REGEX: Lazy<Regex> = Lazy::new(|| Regex::new(r"#[[:alnum:]:-]+").unwrap());
+
+#[derive(Debug, Clone)]
 pub struct Card {
     /// The zettel on the filesystem.
     // I'm not decided on whether I should immediately read the zettel
@@ -20,9 +22,17 @@ impl Card {
     /// resembles a tag. A tag looks something like this:
     /// #abc123-def456:ghi-789 (something alphanumeric with dashes
     /// and/or colons, that starts with a pound)
-    fn extract_tags(&self) -> Vec<Tag> {
-        let re = Regex::new(r"#[[:alnum:]:-]+").unwrap();
-        Vec::<Tag>::new()
+    pub fn extract_tags(&self) -> Vec<Tag> {
+        TAG_REGEX
+            .find_iter(std::fs::read_to_string(&self.path).unwrap().as_str())
+            .map(|m| String::from(m.as_str()))
+            .collect::<Vec<Tag>>()
+    }
+}
+
+impl std::convert::From<PathBuf> for Card {
+    fn from(path: PathBuf) -> Self {
+        Self { path: path }
     }
 }
 
